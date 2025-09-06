@@ -1,6 +1,9 @@
 import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 
+// Initialize MapLibre (no API key needed!)
+// MapLibreGL.setAccessToken(null);
+
 export default function Index() {
  const OpenCamera = () =>{
     router.push("/camera")
