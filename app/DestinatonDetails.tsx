@@ -12,6 +12,7 @@ import {
   ImageBackground,
   FlatList
 } from 'react-native';
+import { useLocalSearchParams, router } from 'expo-router';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -19,8 +20,66 @@ import Feather from 'react-native-vector-icons/Feather';
 
 const { width, height } = Dimensions.get('window');
 
+// Define the destinations array to match the one in TravelApp.tsx
+const allDestinations = [
+  {
+    id: '1',
+    name: 'Hawa Mahal',
+    location: 'Jaipur',
+    image:
+      'https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['palace', 'historical', 'pink city', 'jaipur'],
+  },
+  {
+    id: '2',
+    name: 'Ganga Aarti',
+    location: 'Kashi',
+    image:
+      'https://images.unsplash.com/photo-1585496308895-716bead11173?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['religious', 'river', 'ceremony', 'varanasi', 'kashi'],
+  },
+  {
+    id: '3',
+    name: 'Taj Mahal',
+    location: 'Agra',
+    image:
+      'https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['monument', 'historical', 'wonder', 'agra'],
+  },
+  {
+    id: '4',
+    name: 'Mahakaleshwar Temple',
+    location: 'Ujjain',
+    image:
+      'https://images.unsplash.com/photo-1599665877270-6c920b64a9a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['temple', 'religious', 'shiva', 'ujjain'],
+  },
+  {
+    id: '5',
+    name: 'Amber Fort',
+    location: 'Jaipur',
+    image:
+      'https://images.unsplash.com/photo-1587318224017-4bb04d0f6422?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['fort', 'historical', 'jaipur'],
+  },
+  {
+    id: '6',
+    name: 'Kashi Vishwanath Temple',
+    location: 'Kashi',
+    image:
+      'https://images.unsplash.com/photo-1625642225340-b21a2b5fef8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['temple', 'religious', 'shiva', 'varanasi', 'kashi'],
+  },
+];
+
 export default function DestinationDetails() {
-  const [currentLocation, setCurrentLocation] = useState('Jaipur');
+  const params = useLocalSearchParams();
+  const { id } = params;
+  
+  // Find the destination with the matching ID
+  const destination = allDestinations.find(dest => dest.id === id) || allDestinations[0];
+  
+  const [currentLocation, setCurrentLocation] = useState(destination.location);
   const [photosCount, setPhotosCount] = useState(24);
   const [favoritesCount, setFavoritesCount] = useState(8);
   const [isLocationActive, setIsLocationActive] = useState(true);
@@ -39,15 +98,23 @@ export default function DestinationDetails() {
     return () => clearInterval(interval);
   }, []);
 
-  // Sample images data - using placeholder images
-  const sampleImages = [
-    { id: '1', uri: {uri: 'https://picsum.photos/200/300'}, favorite: true },
-    { id: '2', uri: {uri: 'https://picsum.photos/200/301'}, favorite: false },
-    { id: '3', uri: {uri: 'https://picsum.photos/200/302'}, favorite: true },
-    { id: '4', uri: {uri: 'https://picsum.photos/200/303'}, favorite: false },
-    { id: '5', uri: {uri: 'https://picsum.photos/200/304'}, favorite: true },
-    { id: '6', uri: {uri: 'https://picsum.photos/200/305'}, favorite: false },
-  ];
+  // Generate destination-specific images based on the destination ID
+  const generateDestinationImages = (destId) => {
+    // Create a seed based on the destination ID for consistent but different images
+    const seed = parseInt(destId) * 100;
+    
+    return [
+      { id: `${destId}_1`, uri: {uri: `https://picsum.photos/seed/${seed+1}/200/300`}, favorite: true },
+      { id: `${destId}_2`, uri: {uri: `https://picsum.photos/seed/${seed+2}/200/300`}, favorite: false },
+      { id: `${destId}_3`, uri: {uri: `https://picsum.photos/seed/${seed+3}/200/300`}, favorite: true },
+      { id: `${destId}_4`, uri: {uri: `https://picsum.photos/seed/${seed+4}/200/300`}, favorite: false },
+      { id: `${destId}_5`, uri: {uri: `https://picsum.photos/seed/${seed+5}/200/300`}, favorite: true },
+      { id: `${destId}_6`, uri: {uri: `https://picsum.photos/seed/${seed+6}/200/300`}, favorite: false },
+    ];
+  };
+  
+  // Get images specific to this destination
+  const sampleImages = generateDestinationImages(destination.id);
 
   const renderImageItem = ({ item }) => (
     <View style={styles.imageContainer}>
@@ -66,13 +133,13 @@ export default function DestinationDetails() {
       
       {/* Header with Background Image */}
       <ImageBackground 
-        source={{uri: 'https://picsum.photos/400/600'}}
+        source={{uri: destination.image}}
         style={styles.headerBackground}
         resizeMode="cover"
       >
         <View style={styles.headerOverlay}>
           {/* Back Button */}
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
 
@@ -83,11 +150,11 @@ export default function DestinationDetails() {
 
           {/* Location and Time */}
           <View style={styles.headerContent}>
-            <Text style={styles.locationTitle}>{currentLocation}</Text>
+            <Text style={styles.locationTitle}>{destination.name}</Text>
             <View style={styles.locationInfo}>
-              <Text style={styles.infoText}>{currentTime}</Text>
+              <Text style={styles.infoText}>{destination.location}</Text>
               <Text style={styles.infoText}>•</Text>
-              <Text style={styles.infoText}>24°C</Text>
+              <Text style={styles.infoText}>{currentTime}</Text>
               <Text style={styles.infoText}>•</Text>
               <Text style={styles.infoText}>Sunny</Text>
             </View>

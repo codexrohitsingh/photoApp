@@ -154,7 +154,7 @@ export default function OTP() {
                 
                 {/* Header at the top */}
                 <View style={styles.header}>
-                    <Text style={styles.title}>Travel & Tourism</Text>
+                    <Text style={styles.title}>Raahi</Text>
                     <Text style={styles.subtitle}>Explore the world with us</Text>
                 </View>
                 

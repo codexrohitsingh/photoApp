@@ -192,9 +192,24 @@ export default function TravelApp() {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.cardsContainer}>
                 {filteredDestinations.map((item, index) => (
-                  <View key={item.id} style={[styles.card, index === 0 && styles.firstCard]}>
+                  <TouchableOpacity 
+                    key={item.id} 
+                    style={[styles.card, index === 0 && styles.firstCard]}
+                    onPress={() => {
+                      router.push({
+                        pathname: "/DestinatonDetails",
+                        params: { id: item.id }
+                      });
+                    }}
+                  >
                     <Image source={{ uri: item.image }} style={styles.cardImage} />
-                    <TouchableOpacity style={styles.favorite}>
+                    <TouchableOpacity 
+                      style={styles.favorite}
+                      onPress={(e) => {
+                        e.stopPropagation(); // Prevent triggering the parent onPress
+                        // Handle favorite action
+                      }}
+                    >
                       <Icon name="heart-o" size={16} color="#666" />
                     </TouchableOpacity>
                     <View style={styles.cardOverlay}>
@@ -204,7 +219,7 @@ export default function TravelApp() {
                         <Text style={styles.cardLocation}>{item.location}</Text>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             </ScrollView>
