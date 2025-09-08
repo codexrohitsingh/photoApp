@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import {
     Animated,
@@ -189,9 +190,14 @@ export default function OTP() {
                         <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
                             <TouchableOpacity 
                                 style={styles.button} 
-                                onPress={handleSubmit}
-                                onPressIn={() => setIsButtonHovered(true)}
-                                onPressOut={() => setIsButtonHovered(false)}
+                                // onPress={handleSubmit}
+                                // onPressIn={() => setIsButtonHovered(true)}
+                                // onPressOut={() => setIsButtonHovered(false)}
+                                onPress={()=>{
+                                    router.push(
+                                        "/UserDetailsForm"
+                                    )
+                                }}
                             >
                                 <Text style={styles.buttonText}>Verify</Text>
                             </TouchableOpacity>
