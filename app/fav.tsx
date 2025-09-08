@@ -25,7 +25,7 @@ export default function FavoritesScreen() {
     { id: "8", uri: "https://picsum.photos/400/600?random=8" },
   ];
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, Index }) => {
     // alternating sizes for masonry effect
     const itemStyle =
       index % 3 === 0

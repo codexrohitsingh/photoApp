@@ -17,7 +17,7 @@ import {
 const { width, height } = Dimensions.get('window');
 
 // Using a sample background image URI instead of local file
-const backgroundImage = require('../_components/assests/OTP.jpg');
+const backgroundImage = require('../_components/assests/otp.jpg');
 
 export default function OTP() {
     const [otp, setOtp] = useState(['', '', '', '']);
