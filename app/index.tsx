@@ -25,7 +25,7 @@ export default function Index() {
 
     <View>
 
-<TouchableOpacity onPress={OpenCamera}>
+{/* <TouchableOpacity onPress={OpenCamera}>
   <Text>Open camera </Text>
 </TouchableOpacity>
 <TouchableOpacity onPress={SelectImage}>
@@ -37,7 +37,7 @@ export default function Index() {
 
 <TouchableOpacity onPress={MapParJao}>
   <Text>Open map</Text>
-</TouchableOpacity>
+</TouchableOpacity> */}
 
 <View>
   <TravelLoginScreen/>
