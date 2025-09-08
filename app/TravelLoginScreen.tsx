@@ -46,7 +46,7 @@ export default function TravelLoginScreen() {
         <View style={styles.overlay} />
         <ScrollView contentContainerStyle={styles.scrollContent}>
           <View style={styles.content}>
-            <Text style={styles.title}>Travel & Tourism</Text>
+            <Text style={styles.title}>Raahi</Text>
             <Text style={styles.subtitle}>Explore the world with us</Text>
 
             <View style={styles.inputContainer}>

@@ -1,0 +1,431 @@
+import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Dimensions,
+  ImageBackground,
+  FlatList
+} from 'react-native';
+import { useLocalSearchParams, router } from 'expo-router';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
+
+const { width, height } = Dimensions.get('window');
+
+// Define the destinations array to match the one in TravelApp.tsx
+const allDestinations = [
+  {
+    id: '1',
+    name: 'Hawa Mahal',
+    location: 'Jaipur',
+    image:
+      'https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['palace', 'historical', 'pink city', 'jaipur'],
+  },
+  {
+    id: '2',
+    name: 'Ganga Aarti',
+    location: 'Kashi',
+    image:
+      'https://images.unsplash.com/photo-1585496308895-716bead11173?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['religious', 'river', 'ceremony', 'varanasi', 'kashi'],
+  },
+  {
+    id: '3',
+    name: 'Taj Mahal',
+    location: 'Agra',
+    image:
+      'https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['monument', 'historical', 'wonder', 'agra'],
+  },
+  {
+    id: '4',
+    name: 'Mahakaleshwar Temple',
+    location: 'Ujjain',
+    image:
+      'https://images.unsplash.com/photo-1599665877270-6c920b64a9a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['temple', 'religious', 'shiva', 'ujjain'],
+  },
+  {
+    id: '5',
+    name: 'Amber Fort',
+    location: 'Jaipur',
+    image:
+      'https://images.unsplash.com/photo-1587318224017-4bb04d0f6422?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['fort', 'historical', 'jaipur'],
+  },
+  {
+    id: '6',
+    name: 'Kashi Vishwanath Temple',
+    location: 'Kashi',
+    image:
+      'https://images.unsplash.com/photo-1625642225340-b21a2b5fef8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['temple', 'religious', 'shiva', 'varanasi', 'kashi'],
+  },
+];
+
+export default function DestinationDetails() {
+  const params = useLocalSearchParams();
+  const { id } = params;
+  
+  // Find the destination with the matching ID
+  const destination = allDestinations.find(dest => dest.id === id) || allDestinations[0];
+  
+  const [currentLocation, setCurrentLocation] = useState(destination.location);
+  const [photosCount, setPhotosCount] = useState(24);
+  const [favoritesCount, setFavoritesCount] = useState(8);
+  const [isLocationActive, setIsLocationActive] = useState(true);
+  const [currentTime, setCurrentTime] = useState('');
+
+  useEffect(() => {
+    // Update current time
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Generate destination-specific images based on the destination ID
+  const generateDestinationImages = (destId) => {
+    // Create a seed based on the destination ID for consistent but different images
+    const seed = parseInt(destId) * 100;
+    
+    return [
+      { id: `${destId}_1`, uri: {uri: `https://picsum.photos/seed/${seed+1}/200/300`}, favorite: true },
+      { id: `${destId}_2`, uri: {uri: `https://picsum.photos/seed/${seed+2}/200/300`}, favorite: false },
+      { id: `${destId}_3`, uri: {uri: `https://picsum.photos/seed/${seed+3}/200/300`}, favorite: true },
+      { id: `${destId}_4`, uri: {uri: `https://picsum.photos/seed/${seed+4}/200/300`}, favorite: false },
+      { id: `${destId}_5`, uri: {uri: `https://picsum.photos/seed/${seed+5}/200/300`}, favorite: true },
+      { id: `${destId}_6`, uri: {uri: `https://picsum.photos/seed/${seed+6}/200/300`}, favorite: false },
+    ];
+  };
+  
+  // Get images specific to this destination
+  const sampleImages = generateDestinationImages(destination.id);
+
+  const renderImageItem = ({ item }) => (
+    <View style={styles.imageContainer}>
+      <Image source={item.uri} style={styles.thumbnail} />
+      {item.favorite && (
+        <View style={styles.favoriteBadge}>
+          <Ionicons name="heart" size={12} color="#FF453A" />
+        </View>
+      )}
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      
+      {/* Header with Background Image */}
+      <ImageBackground 
+        source={{uri: destination.image}}
+        style={styles.headerBackground}
+        resizeMode="cover"
+      >
+        <View style={styles.headerOverlay}>
+          {/* Back Button */}
+          <TouchableOpacity style={styles.iconButton} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color="#fff" />
+          </TouchableOpacity>
+
+          {/* More Options Button */}
+          <TouchableOpacity style={styles.iconButton}>
+            <Ionicons name="ellipsis-vertical" size={24} color="#fff" />
+          </TouchableOpacity>
+
+          {/* Location and Time */}
+          <View style={styles.headerContent}>
+            <Text style={styles.locationTitle}>{destination.name}</Text>
+            <View style={styles.locationInfo}>
+              <Text style={styles.infoText}>{destination.location}</Text>
+              <Text style={styles.infoText}>•</Text>
+              <Text style={styles.infoText}>{currentTime}</Text>
+              <Text style={styles.infoText}>•</Text>
+              <Text style={styles.infoText}>Sunny</Text>
+            </View>
+          </View>
+        </View>
+      </ImageBackground>
+
+      {/* Main Content */}
+      <ScrollView style={styles.content}>
+        {/* Statistics Section */}
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{photosCount}</Text>
+            <Text style={styles.statLabel}>Photos</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>{favoritesCount}</Text>
+            <Text style={styles.statLabel}>Favorites</Text>
+          </View>
+          <View style={styles.statItem}>
+            <Text style={styles.statNumber}>12</Text>
+            <Text style={styles.statLabel}>Visits</Text>
+          </View>
+        </View>
+
+        {/* More Pictures Section */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>More Pictures</Text>
+          <TouchableOpacity>
+            <Text style={styles.seeAllText}>See All</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Images Grid */}
+        <FlatList
+          data={sampleImages}
+          renderItem={renderImageItem}
+          keyExtractor={item => item.id}
+          numColumns={3}
+          contentContainerStyle={styles.imagesGrid}
+          scrollEnabled={false}
+        />
+
+        {/* Recent Activity */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Recent Activity</Text>
+        </View>
+
+        <View style={styles.activityItem}>
+          <View style={styles.activityIcon}>
+            <Ionicons name="camera" size={20} color="#034078" />
+          </View>
+          <View style={styles.activityContent}>
+            <Text style={styles.activityText}>Added 5 new photos</Text>
+            <Text style={styles.activityTime}>2 hours ago</Text>
+          </View>
+        </View>
+
+        <View style={styles.activityItem}>
+          <View style={styles.activityIcon}>
+            <Ionicons name="heart" size={20} color="#FF453A" />
+          </View>
+          <View style={styles.activityContent}>
+            <Text style={styles.activityText}>Liked 3 photos</Text>
+            <Text style={styles.activityTime}>Yesterday</Text>
+          </View>
+        </View>
+      </ScrollView>
+
+      {/* Bottom Navigation Bar */}
+      <View style={styles.bottomNav}>
+        <TouchableOpacity style={styles.navButton}>
+          <Ionicons name="home" size={24} color="#034078" />
+          <Text style={styles.navText}>Home</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navButton}>
+          <Ionicons name="location" size={24} color="#034078" />
+          <Text style={styles.navText}>Location</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.addButton}>
+          <Ionicons name="add" size={32} color="#fff" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navButton}>
+          <Ionicons name="heart" size={24} color="#034078" />
+          <Text style={styles.navText}>Favorites</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.navButton}>
+          <Ionicons name="person" size={24} color="#034078" />
+          <Text style={styles.navText}>Profile</Text>
+        </TouchableOpacity>
+      </View>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  headerBackground: {
+    width: '100%',
+    height: 300,
+  },
+  headerOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    padding: 20,
+    justifyContent: 'space-between',
+  },
+  iconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  headerContent: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  locationTitle: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 10,
+  },
+  locationInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  infoText: {
+    color: '#fff',
+    fontSize: 14,
+    marginHorizontal: 5,
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+  },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 30,
+  },
+  statItem: {
+    alignItems: 'center',
+  },
+  statNumber: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#171A1F',
+    marginBottom: 5,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#6A6A6A',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#171A1F',
+  },
+  seeAllText: {
+    fontSize: 14,
+    color: '#034078',
+  },
+  imagesGrid: {
+    marginBottom: 30,
+  },
+  imageContainer: {
+    width: (width - 60) / 3,
+    height: 120,
+    margin: 5,
+    borderRadius: 10,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  thumbnail: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  favoriteBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    backgroundColor: 'rgba(255,255,255,0.9)',
+    borderRadius: 10,
+    padding: 4,
+  },
+  activityItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    padding: 15,
+    backgroundColor: '#F8F9FA',
+    borderRadius: 10,
+  },
+  activityIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#E3F2FD',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  activityContent: {
+    flex: 1,
+  },
+  activityText: {
+    fontSize: 14,
+    color: '#171A1F',
+    marginBottom: 4,
+  },
+  activityTime: {
+    fontSize: 12,
+    color: '#6A6A6A',
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#E5E5E5',
+  },
+  navButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navText: {
+    fontSize: 10,
+    color: '#034078',
+    marginTop: 4,
+  },
+  addButton: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#034078',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: -30,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+});
+
+
+
+
+
+

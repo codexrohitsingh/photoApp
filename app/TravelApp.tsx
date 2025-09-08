@@ -1,24 +1,20 @@
 // TravelApp.tsx
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   Image,
-  ImageBackground,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const { width, height } = Dimensions.get('window');
-
-interface Trip {
-  name: string;
-  active: boolean;
-}
+const { width } = Dimensions.get('window');
 
 interface Destination {
   id: string;
@@ -28,365 +24,445 @@ interface Destination {
   tags: string[];
 }
 
-const TravelApp: React.FC = () => {
-  const [username, setUsername] = useState<string>('Shivankar');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [selectedTrip, setSelectedTrip] = useState<string>(''); // ✅ Start empty
-  const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>([]);
+const allDestinations: Destination[] = [
+  {
+    id: '1',
+    name: 'Hawa Mahal',
+    location: 'Jaipur',
+    image:
+      'https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['palace', 'historical', 'pink city', 'jaipur'],
+  },
+  {
+    id: '2',
+    name: 'Ganga Aarti',
+    location: 'Kashi',
+    image:
+      'https://images.unsplash.com/photo-1585496308895-716bead11173?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['religious', 'river', 'ceremony', 'varanasi', 'kashi'],
+  },
+  {
+    id: '3',
+    name: 'Taj Mahal',
+    location: 'Agra',
+    image:
+      'https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['monument', 'historical', 'wonder', 'agra'],
+  },
+  {
+    id: '4',
+    name: 'Mahakaleshwar Temple',
+    location: 'Ujjain',
+    image:
+      'https://images.unsplash.com/photo-1599665877270-6c920b64a9a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['temple', 'religious', 'shiva', 'ujjain'],
+  },
+  {
+    id: '5',
+    name: 'Amber Fort',
+    location: 'Jaipur',
+    image:
+      'https://images.unsplash.com/photo-1587318224017-4bb04d0f6422?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['fort', 'historical', 'jaipur'],
+  },
+  {
+    id: '6',
+    name: 'Kashi Vishwanath Temple',
+    location: 'Kashi',
+    image:
+      'https://images.unsplash.com/photo-1625642225340-b21a2b5fef8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    tags: ['temple', 'religious', 'shiva', 'varanasi', 'kashi'],
+  },
+];
 
-  // Background image from Unsplash
-  const backgroundImage =
-    'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&q=80';
+export default function TravelApp() {
+  const [search, setSearch] = useState('');
+  const [selectedTrip, setSelectedTrip] = useState<string>('');
+  const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>(allDestinations);
 
-  const recentTrips: Trip[] = [
-    { name: 'Ujjain', active: false },
-    { name: 'Varanasi', active: false },
-    { name: 'Jaipur', active: false },
-    { name: 'Agra', active: false },
-  ];
-
-  // ✅ Fixed image URLs with stable Unsplash links
-  const allDestinations: Destination[] = [
-    {
-      id: '1',
-      name: 'Hawa Mahal',
-      location: 'Jaipur',
-      image:
-        'https://images.unsplash.com/photo-1603262110263-fb0112e7cc33?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      tags: ['palace', 'historical', 'pink city', 'jaipur'],
-    },
-    {
-      id: '2',
-      name: 'Ganga Aarti',
-      location: 'Varanasi',
-      image:
-        'https://images.unsplash.com/photo-1585496308895-716bead11173?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      tags: ['religious', 'river', 'ceremony', 'varanasi', 'kashi'],
-    },
-    {
-      id: '3',
-      name: 'Taj Mahal',
-      location: 'Agra',
-      image:
-        'https://images.unsplash.com/photo-1564507592333-c60657eea523?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      tags: ['monument', 'historical', 'wonder', 'agra'],
-    },
-    {
-      id: '4',
-      name: 'Mahakaleshwar Temple',
-      location: 'Ujjain',
-      image:
-        'https://images.unsplash.com/photo-1599665877270-6c920b64a9a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      tags: ['temple', 'religious', 'shiva', 'ujjain'],
-    },
-    {
-      id: '5',
-      name: 'Amber Fort',
-      location: 'Jaipur',
-      image:
-        'https://images.unsplash.com/photo-1587318224017-4bb04d0f6422?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      tags: ['fort', 'historical', 'jaipur'],
-    },
-    {
-      id: '6',
-      name: 'Kashi Vishwanath Temple',
-      location: 'Varanasi',
-      image:
-        'https://images.unsplash.com/photo-1625642225340-b21a2b5fef8e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-      tags: ['temple', 'religious', 'shiva', 'varanasi', 'kashi'],
-    },
-  ];
-
-  // ✅ Single filtering effect
   useEffect(() => {
-    let results = [...allDestinations];
-
-    if (selectedTrip && selectedTrip !== '') {
-      results = results.filter(
-        (dest) =>
-          dest.location.toLowerCase() === selectedTrip.toLowerCase() ||
-          dest.tags.some((tag) => tag.toLowerCase() === selectedTrip.toLowerCase())
+    if (search.trim().length > 0) {
+      const results = allDestinations.filter(
+        d =>
+          d.name.toLowerCase().includes(search.toLowerCase()) ||
+          d.location.toLowerCase().includes(search.toLowerCase()) ||
+          d.tags.some(tag => tag.toLowerCase().includes(search.toLowerCase())),
       );
-    }
-
-    if (searchQuery && searchQuery.trim() !== '') {
-      const query = searchQuery.toLowerCase().trim();
-      results = results.filter(
-        (dest) =>
-          dest.name.toLowerCase().includes(query) ||
-          dest.location.toLowerCase().includes(query) ||
-          dest.tags.some((tag) => tag.toLowerCase().includes(query))
+      setFilteredDestinations(results);
+    } else if (selectedTrip) {
+      const results = allDestinations.filter(d =>
+        d.location.toLowerCase().includes(selectedTrip.toLowerCase()),
       );
+      setFilteredDestinations(results);
+    } else {
+      setFilteredDestinations(allDestinations);
     }
+  }, [search, selectedTrip]);
 
-    setFilteredDestinations(results);
-  }, [selectedTrip, searchQuery]);
+  const trips = ['Ujjain', 'Kashi', 'Jaipur', 'Agra'];
 
-  const handleTripSelect = (tripName: string) => {
-    setSelectedTrip(selectedTrip === tripName ? '' : tripName);
-    setSearchQuery('');
-  };
-
-  const clearAll = () => {
-    setSearchQuery('');
+  const clearSelection = () => {
     setSelectedTrip('');
+    setSearch('');
   };
 
   return (
-    <ImageBackground
-      source={{ uri: backgroundImage }}
-      style={styles.backgroundImage}
-      resizeMode="cover"
-    >
-      <View style={styles.overlay}>
-        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent />
-        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          {/* Header */}
-          <View style={styles.header}>
-            <View style={styles.headerContent}>
-              <View>
-                <Text style={styles.greeting}>Hello, {username}</Text>
-                <Text style={styles.subGreeting}>Welcome to Travel&Tourism</Text>
-              </View>
-              <TouchableOpacity style={styles.avatarContainer}>
-                <View style={styles.avatar} />
-              </TouchableOpacity>
-            </View>
+    <View style={styles.container}>
+      {/* Gradient Background */}
+      <View style={styles.gradientBackground} />
+      
+      <SafeAreaView style={styles.safeArea}>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          <View>
+            <Text style={styles.header}>Hello, Shivankar</Text>
+            <Text style={styles.subHeader}>Welcome to Travel&Tourism</Text>
+          </View>
+          <TouchableOpacity>
+            <Image
+              source={{ uri: 'https://i.pravatar.cc/100' }}
+              style={styles.headerProfilePic}
+            />
+          </TouchableOpacity>
+        </View>
 
-            {/* Search Bar */}
-            <View style={styles.searchContainer}>
-              <View style={styles.searchBar}>
-                <Text style={styles.searchIcon}>🔍</Text>
-                <TextInput
-                  style={styles.searchInput}
-                  placeholder="Search destinations, locations..."
-                  placeholderTextColor="#9ca3af"
-                  value={searchQuery}
-                  onChangeText={setSearchQuery}
-                />
-                {(searchQuery || selectedTrip) && (
-                  <TouchableOpacity style={styles.clearButton} onPress={clearAll}>
-                    <Text style={styles.clearIcon}>✕</Text>
-                  </TouchableOpacity>
-                )}
+        {/* Search */}
+        <View style={styles.searchContainer}>
+          <Icon name="search" size={18} color="#666" style={styles.searchIcon} />
+          <TextInput
+            placeholder="Search destinations..."
+            placeholderTextColor="#999"
+            style={styles.searchInput}
+            value={search}
+            onChangeText={setSearch}
+          />
+          {search.length > 0 && (
+            <TouchableOpacity onPress={() => setSearch('')} style={styles.clearButton}>
+              <View style={styles.filterIcon}>
+                <Icon name="sliders" size={16} color="#FF6B35" />
               </View>
+            </TouchableOpacity>
+          )}
+          {search.length === 0 && (
+            <View style={styles.filterIcon}>
+              <Icon name="sliders" size={16} color="#FF6B35" />
             </View>
+          )}
+        </View>
 
-            {/* Recent Trips */}
-            <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Your Recent trips</Text>
-              <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                style={styles.tripsContainer}
-              >
-                {recentTrips.map((trip, index) => (
+        <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+          {/* Trips */}
+          <View style={styles.tripsSection}>
+            <Text style={styles.sectionTitle}>Your Recent trips</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tripsScrollView}>
+              <View style={styles.tripsContainer}>
+                {trips.map(trip => (
                   <TouchableOpacity
-                    key={`${trip.name}-${index}`}
-                    onPress={() => handleTripSelect(trip.name)}
-                    style={[
-                      styles.tripButton,
-                      trip.name === selectedTrip ? styles.activeTrip : styles.inactiveTrip,
-                    ]}
+                    key={trip}
+                    onPress={() => setSelectedTrip(selectedTrip === trip ? '' : trip)}
+                    style={[styles.tripButton, selectedTrip === trip && styles.tripButtonActive]}
                   >
                     <Text
                       style={[
-                        styles.tripText,
-                        trip.name === selectedTrip
-                          ? styles.activeTripText
-                          : styles.inactiveTripText,
+                        styles.tripButtonText,
+                        selectedTrip === trip && styles.tripButtonTextActive,
                       ]}
                     >
-                      {trip.name}
+                      {trip}
                     </Text>
                   </TouchableOpacity>
                 ))}
-              </ScrollView>
-            </View>
+              </View>
+            </ScrollView>
+          </View>
 
-            {/* Featured Destinations */}
-            <View style={styles.section}>
+          {/* Destinations */}
+          <View style={styles.destinationsSection}>
+            <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>
-                {searchQuery
-                  ? `Search Results for "${searchQuery}"`
-                  : selectedTrip
-                  ? `Destinations in ${selectedTrip}`
-                  : 'Featured Destinations'}
+                {selectedTrip ? `Featured Destinations` : 'Featured Destinations'}
               </Text>
-
-              {filteredDestinations.length === 0 ? (
-                <View style={styles.noResultsContainer}>
-                  <Text style={styles.noResultsEmoji}>🏛️</Text>
-                  <Text style={styles.noResultsText}>No destinations found</Text>
-                  <Text style={styles.noResultsSubText}>
-                    Try adjusting your search or filters
-                  </Text>
-                  <TouchableOpacity style={styles.resetButton} onPress={clearAll}>
-                    <Text style={styles.resetButtonText}>Clear Filters</Text>
-                  </TouchableOpacity>
-                </View>
-              ) : (
-                <ScrollView
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  style={styles.destinationsContainer}
-                >
-                  {filteredDestinations.map((destination) => (
-                    <TouchableOpacity key={destination.id} style={styles.destinationCard}>
-                      <Image
-                        source={{ uri: destination.image }}
-                        style={styles.destinationImage}
-                        resizeMode="cover"
-                      />
-                      <View style={styles.imageOverlay} />
-                      <View style={styles.destinationInfo}>
-                        <Text style={styles.destinationName}>{destination.name}</Text>
-                        <View style={styles.locationContainer}>
-                          <Text style={styles.locationPin}>📍</Text>
-                          <Text style={styles.locationText}>{destination.location}</Text>
-                        </View>
-                      </View>
-                      <TouchableOpacity style={styles.favoriteButton}>
-                        <Text style={styles.heartIcon}>❤️</Text>
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  ))}
-                </ScrollView>
+              {selectedTrip && (
+                <TouchableOpacity onPress={clearSelection}>
+                  <Text style={styles.clearAllText}>Clear All</Text>
+                </TouchableOpacity>
               )}
             </View>
+            
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <View style={styles.cardsContainer}>
+                {filteredDestinations.map((item, index) => (
+                  <TouchableOpacity 
+                    key={item.id} 
+                    style={[styles.card, index === 0 && styles.firstCard]}
+                    onPress={() => {
+                      router.push({
+                        pathname: "/DestinatonDetails",
+                        params: { id: item.id }
+                      });
+                    }}
+                  >
+                    <Image source={{ uri: item.image }} style={styles.cardImage} />
+                    <TouchableOpacity 
+                      style={styles.favorite}
+                      onPress={(e) => {
+                        e.stopPropagation(); // Prevent triggering the parent onPress
+                        // Handle favorite action
+                      }}
+                    >
+                      <Icon name="heart-o" size={16} color="#666" />
+                    </TouchableOpacity>
+                    <View style={styles.cardOverlay}>
+                      <Text style={styles.cardTitle}>{item.name}</Text>
+                      <View style={styles.locationContainer}>
+                        <Icon name="map-marker" size={12} color="#fff" />
+                        <Text style={styles.cardLocation}>{item.location}</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
           </View>
         </ScrollView>
-      </View>
-    </ImageBackground>
+
+        {/* Bottom Navigation */}
+        <View style={styles.bottomNav}>
+          <TouchableOpacity style={styles.navItem} onPress={()=> <a href='#'></a>}>
+            <Icon name="home" size={20} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem} onPress={()=>{
+            router.push("/Map")
+          }}>
+            <Icon name="map-marker" size={20} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem} onPress={()=>{
+            router.push("/plusPage")
+          }}>
+            <Icon name="plus" size={20} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <Icon name="heart-o" size={20} color="#fff" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.navItem}>
+            <Image
+              source={{ uri: 'https://i.pravatar.cc/100' }}
+              style={styles.navProfilePic}
+            />
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  backgroundImage: { flex: 1, width: '100%', height: '100%' },
-  overlay: { flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.3)' },
-  scrollView: { flex: 1 },
-  header: {
-    paddingHorizontal: 24,
-    paddingTop: 60,
-    paddingBottom: 32,
-    backgroundColor: 'rgba(59, 130, 246, 0.85)',
+  container: {
+    flex: 1,
+    backgroundColor: '#1a365d',
   },
-  headerContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 32,
-  },
-  greeting: { fontSize: 24, fontWeight: 'bold', color: 'white', marginBottom: 4 },
-  subGreeting: { fontSize: 14, color: 'rgba(255, 255, 255, 0.9)' },
-  avatarContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'white',
-  },
-  avatar: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#f97316' },
-  searchContainer: { marginBottom: 32 },
-  searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 25,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    elevation: 2,
-  },
-  searchIcon: { fontSize: 20, color: '#9ca3af', marginRight: 12 },
-  searchInput: { flex: 1, fontSize: 16, color: '#374151', paddingVertical: 4 },
-  clearButton: {
-    backgroundColor: '#ef4444',
-    borderRadius: 15,
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 8,
-  },
-  clearIcon: { color: 'white', fontSize: 14, fontWeight: 'bold' },
-  section: {
-    marginBottom: 32,
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
-    borderRadius: 16,
-    padding: 16,
-    elevation: 2,
-  },
-  sectionTitle: { fontSize: 18, fontWeight: '600', color: '#1f2937', marginBottom: 16 },
-  tripsContainer: { paddingBottom: 8 },
-  tripButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 25,
-    marginRight: 12,
-    elevation: 1,
-  },
-  activeTrip: { backgroundColor: '#1f2937' },
-  inactiveTrip: { backgroundColor: '#f3f4f6' },
-  tripText: { fontSize: 14, fontWeight: '500' },
-  activeTripText: { color: 'white' },
-  inactiveTripText: { color: '#374151' },
-  destinationsContainer: { paddingBottom: 16 },
-  destinationCard: {
-    width: 280,
-    height: 350,
-    borderRadius: 16,
-    marginRight: 16,
-    overflow: 'hidden',
-    position: 'relative',
-    backgroundColor: '#e5e7eb',
-    elevation: 4,
-  },
-  destinationImage: { width: '100%', height: '100%' },
-  imageOverlay: {
+  gradientBackground: {
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    height: '60%',
+    backgroundColor: '#4A90E2',
+    // In a real app, you'd use react-native-linear-gradient here
   },
-  destinationInfo: { position: 'absolute', bottom: 20, left: 20, right: 20 },
-  destinationName: { fontSize: 18, fontWeight: 'bold', color: 'white', marginBottom: 4 },
-  locationContainer: { flexDirection: 'row', alignItems: 'center' },
-  locationPin: { fontSize: 12, marginRight: 4 },
-  locationText: { fontSize: 14, color: 'rgba(255, 255, 255, 0.9)' },
-  favoriteButton: {
-    position: 'absolute',
-    top: 16,
-    right: 16,
-    width: 36,
-    height: 36,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 2,
-  },
-  heartIcon: { fontSize: 16 },
-  noResultsContainer: {
-    height: 250,
-    justifyContent: 'center',
-    alignItems: 'center',
+  safeArea: {
+    flex: 1,
     paddingHorizontal: 20,
   },
-  noResultsEmoji: { fontSize: 48, marginBottom: 16 },
-  noResultsText: { fontSize: 18, fontWeight: '600', color: '#374151', marginBottom: 8 },
-  noResultsSubText: { fontSize: 14, color: '#6b7280', marginBottom: 20 },
-  resetButton: {
-    backgroundColor: '#3b82f6',
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    paddingTop: 20,
+    paddingBottom: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  subHeader: {
+    fontSize: 14,
+    color: '#E6F3FF',
+    opacity: 0.8,
+  },
+  headerProfilePic: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    borderRadius: 25,
+    alignItems: 'center',
+    marginBottom: 30,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  searchIcon: {
+    marginRight: 12,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+  },
+  clearButton: {
+    padding: 4,
+  },
+  filterIcon: {
+    backgroundColor: '#FFF5F0',
+    borderRadius: 6,
+    padding: 8,
+  },
+  scrollView: {
+    flex: 1,
+  },
+  tripsSection: {
+    marginBottom: 30,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: 15,
+  },
+  tripsScrollView: {
+    flexGrow: 0,
+  },
+  tripsContainer: {
+    flexDirection: 'row',
+    paddingRight: 20,
+  },
+  tripButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 25,
+    marginRight: 12,
   },
-  resetButtonText: { color: 'white', fontSize: 14, fontWeight: '500' },
+  tripButtonActive: {
+    backgroundColor: '#333',
+  },
+  tripButtonText: {
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+  },
+  tripButtonTextActive: {
+    color: '#fff',
+  },
+  destinationsSection: {
+    paddingBottom: 100, // Space for bottom nav
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  clearAllText: {
+    color: '#FF6B35',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  cardsContainer: {
+    flexDirection: 'row',
+    paddingRight: 20,
+  },
+  card: {
+    width: width * 0.7,
+    height: 280,
+    borderRadius: 20,
+    marginRight: 16,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 5,
+  },
+  firstCard: {
+    marginLeft: 0,
+  },
+  cardImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  favorite: {
+    position: 'absolute',
+    top: 15,
+    right: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: 20,
+    padding: 8,
+  },
+  cardOverlay: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor:'linear-gradient(transparent, rgba(0,0,0,0.7))',
+    padding: 20,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cardLocation: {
+    fontSize: 13,
+    color: '#fff',
+    marginLeft: 4,
+    opacity: 0.9,
+  },
+  bottomNav: {
+    position: 'absolute',
+    bottom: 30,
+    left: 20,
+    right: 20,
+    backgroundColor: '#2B4C6F',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingVertical: 15,
+    borderRadius: 30,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  navItem: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  navProfilePic: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
 });
-
-export default TravelApp;
