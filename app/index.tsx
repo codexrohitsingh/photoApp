@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
+import TravelLoginScreen from "./TravelLoginScreen";
 
 // Initialize MapLibre (no API key needed!)
 // MapLibreGL.setAccessToken(null);
@@ -37,6 +38,12 @@ export default function Index() {
 <TouchableOpacity onPress={MapParJao}>
   <Text>Open map</Text>
 </TouchableOpacity>
+
+<View>
+  <TravelLoginScreen/>
+</View>
     </View>
+
+
   );
 }

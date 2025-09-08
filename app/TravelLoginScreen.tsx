@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import {
-  View,
+  Image,
+  ImageBackground,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  ImageBackground,
-  StatusBar,
-  ScrollView,
-  Platform,
-  Image,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -24,7 +24,7 @@ const iconGoogle = require('./assests/google.png');
 const iconTwitter = require('./assests/twitter.png');
 const iconInstagram = require('./assests/instagram.png');
 
-export default function App() {
+export default function TravelLoginScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState(''); // Changed from phone to email
 
