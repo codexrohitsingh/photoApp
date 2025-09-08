@@ -1,19 +1,19 @@
 import React from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
+  Dimensions,
   FlatList,
   Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  Dimensions,
+  View,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 const { width } = Dimensions.get("window");
 
-export default function FavoritesScreen() {
+export default function fav() {
   const images = [
     { id: "1", uri: "https://picsum.photos/400/600?random=1" },
     { id: "2", uri: "https://picsum.photos/400/600?random=2" },
@@ -25,7 +25,7 @@ export default function FavoritesScreen() {
     { id: "8", uri: "https://picsum.photos/400/600?random=8" },
   ];
 
-  const renderItem = ({ item, Index }) => {
+  const renderItem = ({ item, index }) => {
     // alternating sizes for masonry effect
     const itemStyle =
       index % 3 === 0

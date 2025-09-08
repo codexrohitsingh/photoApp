@@ -118,11 +118,13 @@ export default function TravelApp() {
             <Text style={styles.header}>Hello, Shivankar</Text>
             <Text style={styles.subHeader}>Welcome to Travel&Tourism</Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{
+            router.push("/user")
+          }}>
             <Image
               source={{ uri: 'https://i.pravatar.cc/100' }}
               style={styles.headerProfilePic}
-            />
+            /> 
           </TouchableOpacity>
         </View>
 
@@ -241,10 +243,14 @@ export default function TravelApp() {
           }}>
             <Icon name="plus" size={20} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity style={styles.navItem} onPress={()=>{
+            router.push("/fav")
+          }}>
             <Icon name="heart-o" size={20} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity style={styles.navItem} onPress={()=>{
+            router.push("/user")
+          }}>
             <Image
               source={{ uri: 'https://i.pravatar.cc/100' }}
               style={styles.navProfilePic}
