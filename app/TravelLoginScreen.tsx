@@ -76,7 +76,7 @@ export default function TravelLoginScreen() {
               </View>
             </View>
 
-            <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
+            <TouchableOpacity style={styles.button}>
               <TouchableOpacity onPress={()=>{
                 router.push("/OTP")
               }}>
