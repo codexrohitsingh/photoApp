@@ -1,16 +1,16 @@
 // TravelApp.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
+  Dimensions,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  Image,
-  StyleSheet,
-  Dimensions,
-  StatusBar,
-  ImageBackground,
+  View,
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');

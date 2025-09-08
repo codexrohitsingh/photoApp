@@ -1,6 +1,7 @@
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
   FlatList,
@@ -150,7 +151,9 @@ const DetailsForm = () => {
           </View>
 
           {/* Save Button */}
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+          <TouchableOpacity style={styles.saveButton} onPress={()=>{
+            router.push("/TravelApp")
+          }}>
             <Text style={styles.saveButtonText}>Save</Text>
           </TouchableOpacity>
         </View>
