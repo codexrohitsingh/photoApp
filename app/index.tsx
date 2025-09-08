@@ -1,5 +1,6 @@
 import { router } from "expo-router";
-import { StyleSheet, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 import TravelLoginScreen from "./TravelLoginScreen";
 
 
