@@ -14,15 +14,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 // Import local background image (add your image to the project)
-const backgroundImage = require('./assests/background.jpg'); // Update this path
+const backgroundImage = require('../_components/assests/background.jpg');
 
 // Import local icons
-const iconPerson = require('./assests/user.png');
-const iconEmail = require('./assests/email.png'); // Changed from phone to email icon
-const iconArrow = require('./assests/arrow.png');
-const iconGoogle = require('./assests/google.png');
-const iconTwitter = require('./assests/twitter.png');
-const iconInstagram = require('./assests/instagram.png');
+const iconPerson = require('../_components/assests/user.png');
+const iconEmail = require('../_components/assests/email.png'); // Changed from phone to email icon
+const iconArrow = require('../_components/assests/arrow.png');
+const iconGoogle = require('../_components/assests/google.png');
+const iconTwitter = require('../_components/assests/twitter.png');
+const iconInstagram = require('../_components/assests/instagram.png');
 
 export default function TravelLoginScreen() {
   const [name, setName] = useState('');
