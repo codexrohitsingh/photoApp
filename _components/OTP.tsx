@@ -1,23 +1,22 @@
-import { router } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-    Animated,
-    Dimensions,
-    ImageBackground,
-    Platform,
-    SafeAreaView,
-    StatusBar,
-    StyleSheet,
+    View,
     Text,
     TextInput,
     TouchableOpacity,
-    View
+    StyleSheet,
+    ImageBackground,
+    StatusBar,
+    SafeAreaView,
+    Platform,
+    Dimensions,
+    Animated
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 // Using a sample background image URI instead of local file
-const backgroundImage = require('../_components/assests/otp.jpg');
+const backgroundImage = require('./assets/images/otp.jpg');
 
 export default function OTP() {
     const [otp, setOtp] = useState(['', '', '', '']);
@@ -190,14 +189,9 @@ export default function OTP() {
                         <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
                             <TouchableOpacity 
                                 style={styles.button} 
-                                // onPress={handleSubmit}
-                                // onPressIn={() => setIsButtonHovered(true)}
-                                // onPressOut={() => setIsButtonHovered(false)}
-                                onPress={()=>{
-                                    router.push(
-                                        "/UserDetailsForm"
-                                    )
-                                }}
+                                onPress={handleSubmit}
+                                onPressIn={() => setIsButtonHovered(true)}
+                                onPressOut={() => setIsButtonHovered(false)}
                             >
                                 <Text style={styles.buttonText}>Verify</Text>
                             </TouchableOpacity>
