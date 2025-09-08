@@ -1,13 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import {
-    FlatList,
-    Image,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 const dummyData = [
@@ -63,10 +64,14 @@ export default function plusPage() {
 
       {/* Footer */}
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.postBtn}>
+        <TouchableOpacity style={styles.postBtn} onPress={()=>{
+            router.push("/imagePicker")
+        }}>
           <Text style={styles.postText}>POST</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.cameraBtn}>
+        <TouchableOpacity style={styles.cameraBtn} onPress={()=>{
+          router.push("/camera")
+        }}>
           <Text style={styles.cameraText}>CAMERA</Text>
         </TouchableOpacity>
       </View>

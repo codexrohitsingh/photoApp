@@ -222,7 +222,7 @@ export default function TravelApp() {
             <Icon name="map-marker" size={20} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItem} onPress={()=>{
-            router.push("/imagePicker")
+            router.push("/plusPage")
           }}>
             <Icon name="plus" size={20} color="#fff" />
           </TouchableOpacity>

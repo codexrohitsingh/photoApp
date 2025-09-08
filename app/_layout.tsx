@@ -11,3 +11,11 @@ export default function RootLayout() {
     </SafeAreaProvider>
   );
 }
+
+// function RootLayoutNav() {
+//   return (
+//     <ClerkProvider>
+//       <Slot />
+//     </ClerkProvider>
+//   )
+// }
