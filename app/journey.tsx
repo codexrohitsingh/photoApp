@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  StatusBar,
-  Dimensions,
-  Modal,
-  FlatList,
   Alert,
+  Dimensions,
+  FlatList,
+  Modal,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Svg, Path, Circle } from 'react-native-svg';
+import { Circle, Path, Svg } from 'react-native-svg';
 
 const { width, height } = Dimensions.get('window');
 
@@ -31,12 +31,12 @@ interface JourneyPoint {
 }
 
 const locations: Location[] = [
-  { id: '1', name: 'Central Park', address: 'New York, NY' },
-  { id: '2', name: 'Times Square', address: 'New York, NY' },
-  { id: '3', name: 'Brooklyn Bridge', address: 'Brooklyn, NY' },
-  { id: '4', name: 'Empire State Building', address: 'Manhattan, NY' },
-  { id: '5', name: 'Statue of Liberty', address: 'Liberty Island, NY' },
-  { id: '6', name: 'One World Trade', address: 'Manhattan, NY' },
+{ id: '1', name: 'Jagannath Puri Temple', address: 'Puri, Odisha' },
+{ id: '2', name: 'Golden Temple', address: 'Amritsar, Punjab' },
+{ id: '3', name: 'India Gate', address: 'New Delhi' },
+{ id: '4', name: 'Taj Mahal', address: 'Agra, Uttar Pradesh' },
+{ id: '5', name: 'Gateway of India', address: 'Mumbai, Maharashtra' },
+{ id: '6', name: 'Red Fort', address: 'New Delhi' },
 ];
 
 const JourneyApp: React.FC = () => {

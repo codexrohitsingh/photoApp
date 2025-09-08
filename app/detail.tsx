@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { router } from "expo-router";
+import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  StatusBar,
-  Platform,
-  Modal,
-  TextInput,
   Alert,
+  Modal,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 // Remove LinearGradient import if not installed, or install it with: expo install expo-linear-gradient
 
-const JourneyScreen = () => {
+const detail = () => {
   const [currentTime, setCurrentTime] = useState("9:41");
   const [trips, setTrips] = useState([
     {
@@ -165,6 +166,9 @@ const JourneyScreen = () => {
               isPastJourney(trip.date) && styles.pastTripCard,
             ]}
             onLongPress={() => handleDeleteTrip(trip.id)}
+            onPress={()=>{
+              router.push("/journey")
+            }}
             activeOpacity={0.8}
           >
             <View style={styles.tripHeader}>
@@ -522,4 +526,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JourneyScreen;
+export default detail;

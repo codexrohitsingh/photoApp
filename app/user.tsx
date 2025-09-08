@@ -1,16 +1,17 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
   Alert,
+  Image,
   Modal,
-  TextInput,
   Platform,
-  StatusBar
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -137,10 +138,12 @@ const UserProfileScreen = () => {
         
         <TouchableOpacity 
           style={styles.menuItem}
-          onPress={() => toggleCheckbox('journey')}
+          onPress={() => router.push("/detail")}
         >
           <Icon name="image" size={24} color="#19191F" />
-          <Text style={styles.menuText}>Journey</Text>
+          <Text style={styles.menuText} onPress={()=>{
+            router.push("/")
+          }}>Journey</Text>
           <View style={[styles.checkbox, journeyChecked && styles.checked]}>
             {journeyChecked && <Icon name="check" size={16} color="#FFFFFF" />}
           </View>
