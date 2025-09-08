@@ -1,6 +1,5 @@
 import { Stack } from "expo-router";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
@@ -8,6 +7,14 @@ export default function RootLayout() {
         headerShown: false,
         contentStyle: { backgroundColor: 'transparent' }
       }} />
+        {/* <ClerkProvider tokenCache={tokenCache}>
+      <Slot />
+    </ClerkProvider> */}
+    {/* <View>
+      <ClerkProvider>
+      <Slot />
+    </ClerkProvider>
+    </View> */}
     </SafeAreaProvider>
   );
 }
