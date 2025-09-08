@@ -1,4 +1,5 @@
 // TravelApp.tsx
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
@@ -212,13 +213,17 @@ export default function TravelApp() {
 
         {/* Bottom Navigation */}
         <View style={styles.bottomNav}>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity style={styles.navItem} onPress={()=> <a href='#'></a>}>
             <Icon name="home" size={20} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity style={styles.navItem} onPress={()=>{
+            router.push("/Map")
+          }}>
             <Icon name="map-marker" size={20} color="#fff" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navItem}>
+          <TouchableOpacity style={styles.navItem} onPress={()=>{
+            router.push("/imagePicker")
+          }}>
             <Icon name="plus" size={20} color="#fff" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.navItem}>
