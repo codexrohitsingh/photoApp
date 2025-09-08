@@ -13,7 +13,7 @@ import TravelLoginScreen from "./TravelLoginScreen";
 export default function Index() {
   const [showSplash, setShowSplash] = useState(true);
   const scaleAnim = useRef(new Animated.Value(1)).current;
-  
+
   useEffect(() => {
     // Start zoom animation
     Animated.timing(scaleAnim, {
