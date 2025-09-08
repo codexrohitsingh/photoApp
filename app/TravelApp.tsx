@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width } = Dimensions.get('window');
@@ -397,7 +398,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+    backgroundColor:'linear-gradient(transparent, rgba(0,0,0,0.7))',
     padding: 20,
   },
   cardTitle: {
