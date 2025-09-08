@@ -1,5 +1,7 @@
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
   Platform,
@@ -10,7 +12,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -76,7 +77,12 @@ export default function TravelLoginScreen() {
             </View>
 
             <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
+              <TouchableOpacity onPress={()=>{
+                router.push("/OTP")
+              }}>
               <Text style={styles.buttonText}>Get Started</Text>
+
+              </TouchableOpacity>
               <Image source={iconArrow} style={styles.buttonIcon} />
             </TouchableOpacity>
 
