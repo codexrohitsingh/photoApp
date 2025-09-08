@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import TravelLoginScreen from "./TravelLoginScreen";
+import PlusPage from "./plusPage";
+
 // Initialize MapLibre (no API key needed!)
 // MapLibreGL.setAccessToken(null);
 
@@ -23,9 +24,9 @@ export default function Index() {
  
   return (
     <View style={styles.container}>
-      <TravelLoginScreen/>
-
+      {/* <TravelLoginScreen/> */}
       {/* <OTP/> */}
+      <PlusPage />
       
       {/* Navigation buttons - uncomment when needed */}
       {/* <View style={styles.navContainer}>
