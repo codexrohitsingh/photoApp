@@ -1,10 +1,6 @@
 import { router } from "expo-router";
-<<<<<<< HEAD
 import { useEffect, useRef, useState } from "react";
 import { Animated, StyleSheet, View } from "react-native";
-=======
-import { StyleSheet, View } from "react-native";
->>>>>>> 7e300973d18934d8906b7881d298dfffae96b7cb
 import TravelLoginScreen from "./TravelLoginScreen";
 
 // Initialize MapLibre (no API key needed!)
