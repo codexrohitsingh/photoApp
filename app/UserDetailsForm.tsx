@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  TouchableOpacity,
-  Modal,
-  FlatList,
-  Platform,
-  ImageBackground,
-} from 'react-native';
 import DateTimePicker, {
   DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
+import React, { useState } from 'react';
+import {
+  FlatList,
+  ImageBackground,
+  Modal,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 const DetailsForm = () => {
   const [name, setName] = useState('');
@@ -74,7 +74,7 @@ const DetailsForm = () => {
 
   return (
     <ImageBackground
-      source={require('./assests/background.jpg')}
+      source={require('../_components/assests/background.jpg')}
       style={styles.backgroundImage}
     >
       <SafeAreaView style={styles.container}>
