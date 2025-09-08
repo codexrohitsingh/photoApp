@@ -20,6 +20,8 @@ export default function Index() {
  
   return (
 
+    
+
     <View>
 
 <TouchableOpacity onPress={OpenCamera}>
