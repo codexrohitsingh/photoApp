@@ -24,6 +24,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <TravelLoginScreen/>
+
       {/* <OTP/> */}
       
       {/* Navigation buttons - uncomment when needed */}
