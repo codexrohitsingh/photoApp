@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -109,14 +110,19 @@ export default function TravelLoginScreen() {
   );
 }
 
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: width,
+    height: height,
   },
   background: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: width,
+    height: height,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
